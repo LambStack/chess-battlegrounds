@@ -1,25 +1,47 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Home from './pages/Home.react';
+import CalcMoveFunctionContext from './utils/CalcMoveFunctionContext';
+const styles = {
+	app: {
+		minHeight: '100vh',
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+	},
+	nav: {
+		height: 60,
+		backgroundColor: '#333',
+	},
+	footer: {
+		height: 60,
+		backgroundColor: '#666',
+	},
+	page: {
+		flex: 1,
+	},
+};
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [calcMoveFunction, setCalcMoveFunction] =
+		useState(`function calculateMove(
+		position,
+	) {
+		return position.moves()[Math.floor(Math.random() * position.moves().length)];
+	}`);
+
+	return (
+		<div style={styles.app}>
+			<div style={styles.nav}></div>
+			<CalcMoveFunctionContext.Provider value={calcMoveFunction}>
+				<div style={styles.page}>
+					<Home setCalcMoveFunction={setCalcMoveFunction} />
+				</div>
+			</CalcMoveFunctionContext.Provider>
+
+			<div style={styles.footer}></div>
+		</div>
+	);
 }
 
 export default App;
