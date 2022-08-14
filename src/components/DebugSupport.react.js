@@ -49,7 +49,7 @@ export default function DebugSupport(props) {
 	const [opponent, setOpponent] = useState(OPPONNENTS[0]);
 	const getCalcMoveFunctionAsFn = useMemo(() => {
 		return () => {
-			return eval(`${calcMoveFunction}`);
+			return eval(calcMoveFunction);
 		};
 	}, [calcMoveFunction]);
 
@@ -59,7 +59,6 @@ export default function DebugSupport(props) {
 	};
 	const playMoveWithResponse = () => {
 		const move = getCalcMoveFunctionAsFn()(props.position);
-
 		props.playMoveWithResponse(move, opponent.calculateMove);
 	};
 

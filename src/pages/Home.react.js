@@ -33,7 +33,8 @@ export default function Home(props) {
 	const playMoveWithResponse = (move, response) => {
 		const tempPosition = new Position(gameState);
 		playMoveOnPosition(move, tempPosition);
-		playMoveOnPosition(response(tempPosition), tempPosition);
+		const responseMove = response(tempPosition);
+		playMoveOnPosition(responseMove, tempPosition);
 		setGameState(tempPosition);
 	};
 
@@ -50,7 +51,7 @@ export default function Home(props) {
 			}
 			tempPosition = new Position(newTempPositon);
 			setGameState(tempPosition);
-		}, 500);
+		}, 250);
 		finishGameIntervalId.current = intervalId;
 	};
 

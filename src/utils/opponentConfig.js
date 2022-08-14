@@ -1,4 +1,4 @@
-import { forEachSquare, Position } from 'kokopu';
+import { forEachSquare } from 'kokopu';
 
 export const OPPONNENTS = [
 	{
@@ -7,87 +7,117 @@ export const OPPONNENTS = [
 			const legalMoves = position.moves();
 			return legalMoves[Math.floor(Math.random() * legalMoves.length)];
 		}
-		calculateMove
 		`,
 		calculateMove: (position) => {
-			const legalMoves = position.moves();
-			return legalMoves[Math.floor(Math.random() * legalMoves.length)];
+			const legalMoves = position.moves().sort(() => {
+				return Math.random() - 0.5;
+			});
+			return legalMoves[0];
 		},
 	},
 	{
 		name: 'Aggressive Alice',
 		calculateMove: (position) => {
-			const legalMoves = position.moves();
+			const legalMoves = position.moves().sort(() => {
+				return Math.random() - 0.5;
+			});
 			const originalFen = position.fen();
-			const positionCopy = new Position(position);
+
 			for (let move of legalMoves) {
-				positionCopy.play(move);
-				if (positionCopy.isCheckmate() || positionCopy.isCheck()) {
+				position.play(move);
+				if (position.isCheckmate() || position.isCheck()) {
 					return move;
 				}
-				positionCopy.fen(originalFen);
+				position.fen(originalFen);
 
 				if (move.isCapture()) {
 					return move;
 				}
 			}
-			return legalMoves[Math.floor(Math.random() * legalMoves.length)];
+			return legalMoves[0];
 		},
 	},
 	{
-		name: 'Minne Max',
+		name: 'Minnie Max',
 		calculateMove: (position) => {
-			const legalMoves = position.moves();
+			const legalMoves = position.moves().sort(() => {
+				return Math.random() - 0.5;
+			});
 			const fen = position.fen();
 
 			const legalMoveMap = legalMoves.map((move) => {
 				return {
-					move: move,
+					originalMove: move, // this is what we'll play at the end
+					continuation: move, // the move in this line we're currently estimating
 					score: 0,
 				};
 			});
 			let highestScoreMove = legalMoveMap[0];
 
-			const calcProxyScore = () => {
-				// need something here
-			};
-
-			const determineMoveScore = (move, depth, myTurn) => {
+			const determineMoveScore = (move, depth, wasMyTurn) => {
 				position.fen(fen);
-				position.play(move);
+				// afteer this it becomes the opponents turn, we will be estimating positions during their turn
+				position.play(move.continuation != null ? move.continuation : move);
 
-				if (position.isCheckmate()) {
-					return 99;
-				}
-				if (depth === 0) {
-					return calcProxyScore();
-				}
-				position.moves().forEach((move) => {
-					if (myTurn) {
-						return Math.max(
-							calcProxyScore(),
-							determineMoveScore(move, depth--, !myTurn),
-						);
+				function calcProxyScore() {
+					// need something here
+					const trimmedFen = position.fen().replace(/[^a-z]/gi, '');
+					let whitePieces = 0,
+						blackPieces = 0;
+					forEachSquare((square) => {
+						if (position.square(square)[0] === 'w') {
+							whitePieces++;
+						} else if (position.square(square)[0] === 'b') {
+							blackPieces++;
+						}
+					});
+					if (
+						// it's my turn and I'm white
+						(position.turn() === 'b' && wasMyTurn) ||
+						// it's not my turn and I'm white
+						(position.turn() === 'w' && !wasMyTurn)
+					) {
+						return whitePieces - blackPieces;
 					} else {
-						return Math.min(
-							calcProxyScore(),
-							determineMoveScore(move, depth--, !myTurn),
-						);
+						return blackPieces - whitePieces;
 					}
-				});
+				}
+				if (position.isCheckmate() && wasMyTurn) {
+					return 99;
+				} else if (position.isCheckmate() && !wasMyTurn) {
+					return -99;
+				}
+				if (depth <= 0) {
+					const proxyScore = calcProxyScore();
+					return proxyScore;
+				}
+				const moves = position.moves();
+				for (let i = 0; i < moves.length; i++) {
+					const prxyScore = calcProxyScore();
+					const responseScore = determineMoveScore(
+						moves[i],
+						depth - 1,
+						!wasMyTurn,
+					);
+					if (wasMyTurn) {
+						const max = Math.max(prxyScore, responseScore);
+						return max;
+					} else {
+						const min = Math.min(prxyScore, responseScore);
+						return min;
+					}
+				}
 			};
 
 			legalMoveMap.forEach((move) => {
-				move.score = determineMoveScore(move, 2, true);
-
-				if (highestScoreMove.score === move.score) {
-					highestScoreMove = Math.random() > 0.5 ? move : highestScoreMove;
-				}
+				move.score = determineMoveScore(move, 10, true);
 				highestScoreMove =
 					move.score > highestScoreMove.score ? move : highestScoreMove;
 			});
 
-			return highestScoreMove.move;
+			// reset position
+			position.fen(fen);
+			return highestScoreMove.originalMove;
 		},
 	},
 ];

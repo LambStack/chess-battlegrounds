@@ -23,12 +23,10 @@ const styles = {
 };
 
 function App() {
-	const [calcMoveFunction, setCalcMoveFunction] =
-		useState(`function calculateMove(
-		position,
-	) {
-		return position.moves()[Math.floor(Math.random() * position.moves().length)];
-	}`);
+	const [calcMoveFunction, setCalcMoveFunction] = useState(`position => {
+			const legalMoves = position.moves();
+			return legalMoves[Math.floor(Math.random() * legalMoves.length)];
+		  }`);
 
 	return (
 		<div style={styles.app}>

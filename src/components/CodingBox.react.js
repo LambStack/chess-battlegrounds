@@ -45,6 +45,9 @@ export default function CodingBox(props) {
 							onChange={(e) => {
 								setOpponent(OPPONNENTS[e.target.value]);
 								setCode(OPPONNENTS[e.target.value].calculateMove.toString());
+								props.setCalcMoveFunction(
+									OPPONNENTS[e.target.value].calculateMove.toString(),
+								);
 							}}
 						>
 							{OPPONNENTS.map((opponent, index) => {
