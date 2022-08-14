@@ -38,15 +38,15 @@ export default function CodingBox(props) {
 			<div style={styles.header}>
 				{
 					<div>
-						<label htmlFor='opponents'>Your AI:</label>
+						<label htmlFor='opponents'>White AI:</label>
 						<select
 							name='opponents'
 							id='opponents'
 							onChange={(e) => {
 								setOpponent(OPPONNENTS[e.target.value]);
-								setCode(OPPONNENTS[e.target.value].calculateMove.toString());
+								setCode(OPPONNENTS[e.target.value].toString());
 								props.setCalcMoveFunction(
-									OPPONNENTS[e.target.value].calculateMove.toString(),
+									OPPONNENTS[e.target.value].toString(),
 								);
 							}}
 						>

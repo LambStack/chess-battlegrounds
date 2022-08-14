@@ -1,19 +1,10 @@
-import APIHelp from './APIHelp.react';
 import GameBoard from './GameBoard.react';
-import {
-	BsInfoCircle,
-	BsFillPlayFill,
-	BsFillArrowRightSquareFill,
-	BsFillArrowDownRightCircleFill,
-	BsFillArrowUpRightCircleFill,
-	BsStopCircle,
-} from 'react-icons/bs';
-import { BiReset } from 'react-icons/bi';
 
 import { OPPONNENTS } from '../utils/opponentConfig';
 import { useContext, useMemo, useState } from 'react';
 import CalcMoveFunctionContext from '../utils/CalcMoveFunctionContext';
 import { forEachSquare } from 'kokopu';
+import DebuggerButton, { icons } from './DebuggerButton.react';
 
 const styles = {
 	container: {
@@ -27,10 +18,7 @@ const styles = {
 	flex: {
 		display: 'flex',
 	},
-	button: {
-		height: 30,
-		width: 30,
-	},
+
 	debugButtons: {
 		marginRight: '8px',
 	},
@@ -72,21 +60,36 @@ export default function DebugSupport(props) {
 			<GameBoard position={props.position} />
 			<div style={styles.container}>
 				<div style={styles.debugButtons}>
-					<BsFillPlayFill style={styles.button} onClick={finishGame} />
-					<BsFillArrowRightSquareFill
-						style={styles.button}
+					<DebuggerButton
+						onClick={finishGame}
+						tooltip={'Play moves'}
+						getIcon={icons.play}
+					/>
+					<DebuggerButton
 						onClick={playMoveWithResponse}
+						tooltip={'Play move, with response'}
+						getIcon={icons.response}
 					/>
-					<BsFillArrowDownRightCircleFill
-						style={styles.button}
+
+					<DebuggerButton
 						onClick={playSigleMove}
+						tooltip={'Play single move, (Input AI plays both sides)'}
+						getIcon={icons.step}
 					/>
-					<BsStopCircle style={styles.button} onClick={props.stopAutoPlay} />
-					<BiReset style={styles.button} onClick={props.resetBoard} />
+					<DebuggerButton
+						onClick={props.stopAutoplay}
+						tooltip={'Stop playing'}
+						getIcon={icons.stop}
+					/>
+					<DebuggerButton
+						onClick={props.resetBoard}
+						tooltip={'Reset game'}
+						getIcon={icons.reset}
+					/>
 				</div>
 				<div style={styles.flex}>
 					<div>
-						<label htmlFor='opponents'>Opposing AI:</label>
+						<label htmlFor='opponents'>Black AI:</label>
 						<select
 							name='opponents'
 							id='opponents'
@@ -103,8 +106,37 @@ export default function DebugSupport(props) {
 							})}
 						</select>
 					</div>
-					<BsInfoCircle style={styles.button} />
+					<DebuggerButton
+						tooltip={'API Support (button does nothing right now)'}
+						getIcon={icons.info}
+					/>
 				</div>
+			</div>
+			<div>
+				<h1>API</h1>
+				<ul>
+					<li>
+						<b>Position: </b>
+						<a href='https://kokopu.yo35.org/docs/2.9.2/Position.html'>
+							https://kokopu.yo35.org/docs/2.9.2/Position.html
+						</a>
+						{/* <ul>
+							<li>
+								fen(): get the Forsyth–Edwards Notation of the current position
+							</li>
+							<li>
+								fen(fen): set the current position to the state described by the
+								argument
+							</li>
+						</ul> */}
+					</li>
+					<li>
+						<b>forEachSquare: </b>
+						<a href='https://kokopu.yo35.org/docs/2.9.2/global.html#forEachSquare'>
+							https://kokopu.yo35.org/docs/2.9.2/global.html#forEachSquare
+						</a>
+					</li>
+				</ul>
 			</div>
 		</div>
 	);
