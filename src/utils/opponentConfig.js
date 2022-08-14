@@ -8,7 +8,7 @@ export const OPPONNENTS = [
 			return legalMoves[Math.floor(Math.random() * legalMoves.length)];
 		}
 		`,
-		calculateMove: (position) => {
+		calculateMove: (position, _forEachSquare) => {
 			const legalMoves = position.moves().sort(() => {
 				return Math.random() - 0.5;
 			});
@@ -17,7 +17,7 @@ export const OPPONNENTS = [
 	},
 	{
 		name: 'Aggressive Alice',
-		calculateMove: (position) => {
+		calculateMove: (position, _forEachSquare) => {
 			const legalMoves = position.moves().sort(() => {
 				return Math.random() - 0.5;
 			});
@@ -39,7 +39,7 @@ export const OPPONNENTS = [
 	},
 	{
 		name: 'Minnie Max',
-		calculateMove: (position) => {
+		calculateMove: (position, forEachSquare) => {
 			const legalMoves = position.moves().sort(() => {
 				return Math.random() - 0.5;
 			});
@@ -61,9 +61,10 @@ export const OPPONNENTS = [
 
 				function calcProxyScore() {
 					// need something here
-					const trimmedFen = position.fen().replace(/[^a-z]/gi, '');
+					// const trimmedFen = position.fen().replace(/[^a-z]/gi, '');
 					let whitePieces = 0,
 						blackPieces = 0;
+
 					forEachSquare((square) => {
 						if (position.square(square)[0] === 'w') {
 							whitePieces++;

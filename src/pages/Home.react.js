@@ -1,4 +1,4 @@
-import { Position } from 'kokopu';
+import { Position, forEachSquare } from 'kokopu';
 import React, { useRef, useState } from 'react';
 import CodingBox from '../components/CodingBox.react';
 import DebugSupport from '../components/DebugSupport.react';
@@ -33,7 +33,7 @@ export default function Home(props) {
 	const playMoveWithResponse = (move, response) => {
 		const tempPosition = new Position(gameState);
 		playMoveOnPosition(move, tempPosition);
-		const responseMove = response(tempPosition);
+		const responseMove = response(tempPosition, forEachSquare);
 		playMoveOnPosition(responseMove, tempPosition);
 		setGameState(tempPosition);
 	};
@@ -44,10 +44,16 @@ export default function Home(props) {
 		const intervalId = setInterval(() => {
 			const newTempPositon = new Position(tempPosition);
 			if (newTempPositon.hasMove()) {
-				playMoveOnPosition(player1Function(newTempPositon), newTempPositon);
+				playMoveOnPosition(
+					player1Function(newTempPositon, forEachSquare),
+					newTempPositon,
+				);
 			}
 			if (newTempPositon.hasMove()) {
-				playMoveOnPosition(player2Function(newTempPositon), newTempPositon);
+				playMoveOnPosition(
+					player2Function(newTempPositon, forEachSquare),
+					newTempPositon,
+				);
 			}
 			tempPosition = new Position(newTempPositon);
 			setGameState(tempPosition);

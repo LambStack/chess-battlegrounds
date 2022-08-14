@@ -13,6 +13,7 @@ import { BiReset } from 'react-icons/bi';
 import { OPPONNENTS } from '../utils/opponentConfig';
 import { useContext, useMemo, useState } from 'react';
 import CalcMoveFunctionContext from '../utils/CalcMoveFunctionContext';
+import { forEachSquare } from 'kokopu';
 
 const styles = {
 	container: {
@@ -54,11 +55,11 @@ export default function DebugSupport(props) {
 	}, [calcMoveFunction]);
 
 	const playSigleMove = () => {
-		const move = getCalcMoveFunctionAsFn()(props.position);
+		const move = getCalcMoveFunctionAsFn()(props.position, forEachSquare);
 		props.playMove(move);
 	};
 	const playMoveWithResponse = () => {
-		const move = getCalcMoveFunctionAsFn()(props.position);
+		const move = getCalcMoveFunctionAsFn()(props.position, forEachSquare);
 		props.playMoveWithResponse(move, opponent.calculateMove);
 	};
 
