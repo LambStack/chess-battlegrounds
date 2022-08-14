@@ -1,7 +1,7 @@
 {
   "name": "chess-battlegrounds",
-  "version": ".2.0",
-  "homepage": "chessfightai.xyz",
+  "version": "0.2.0",
+  "homepage": "https://chessfightai.xyz",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
