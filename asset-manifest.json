@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3a931baa.css",
+    "main.js": "/static/js/main.1e8d75b7.js",
+    "static/js/787.6c837517.chunk.js": "/static/js/787.6c837517.chunk.js",
+    "static/media/chessalpha.woff": "/static/media/chessalpha.d328622e95bd4d358342.woff",
+    "static/media/chessalpha.woff2": "/static/media/chessalpha.d01460493e9c98a8e185.woff2",
+    "index.html": "/index.html",
+    "main.3a931baa.css.map": "/static/css/main.3a931baa.css.map",
+    "main.1e8d75b7.js.map": "/static/js/main.1e8d75b7.js.map",
+    "787.6c837517.chunk.js.map": "/static/js/787.6c837517.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3a931baa.css",
+    "static/js/main.1e8d75b7.js"
+  ]
+}
