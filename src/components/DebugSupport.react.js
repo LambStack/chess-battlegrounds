@@ -18,10 +18,6 @@ const styles = {
 	flex: {
 		display: 'flex',
 	},
-
-	debugButtons: {
-		marginRight: '8px',
-	},
 };
 
 // const getCalcMoveFunction = () => {
@@ -42,7 +38,7 @@ export default function DebugSupport(props) {
 		};
 	}, [calcMoveFunction]);
 
-	const playSigleMove = () => {
+	const playSingleMove = () => {
 		const move = getCalcMoveFunctionAsFn()(props.position, forEachSquare);
 		props.playMove(move);
 	};
@@ -59,7 +55,7 @@ export default function DebugSupport(props) {
 		<div>
 			<GameBoard position={props.position} />
 			<div style={styles.container}>
-				<div style={styles.debugButtons}>
+				<div>
 					<DebuggerButton
 						onClick={finishGame}
 						tooltip={'Play moves'}
@@ -72,12 +68,12 @@ export default function DebugSupport(props) {
 					/>
 
 					<DebuggerButton
-						onClick={playSigleMove}
+						onClick={playSingleMove}
 						tooltip={'Play single move, (Input AI plays both sides)'}
 						getIcon={icons.step}
 					/>
 					<DebuggerButton
-						onClick={props.stopAutoplay}
+						onClick={props.stopAutoPlay}
 						tooltip={'Stop playing'}
 						getIcon={icons.stop}
 					/>

@@ -1,21 +1,19 @@
 import { useMemo, useState } from 'react';
-import {
-	BsInfoCircle,
-	BsFillPlayFill,
-	BsFillArrowRightSquareFill,
-	BsFillArrowDownRightCircleFill,
-	BsStopCircle,
-} from 'react-icons/bs';
-import { BiReset } from 'react-icons/bi';
+import { BsInfoCircle, BsStopCircle } from 'react-icons/bs';
+import { GrPowerReset, GrPlay, GrChapterNext } from 'react-icons/gr';
+import { RxTrackNext } from 'react-icons/rx';
 const styles = {
-	tooltipVisible: {
+	tooltip: {
 		position: 'absolute',
 	},
-	tooltipHidden: {},
 	button: {
+		paddingRight: '2px',
+		display: 'inline-block',
 		height: 30,
 		width: 30,
-		display: 'inline',
+	},
+	hovered: {
+		border: '2px solid black',
 	},
 };
 
@@ -24,44 +22,39 @@ export const icons = {
 		return <BsInfoCircle style={styles.button} />;
 	},
 	play: () => {
-		return <BsFillPlayFill style={styles.button} />;
+		return <GrPlay style={styles.button} />;
 	},
 	response: () => {
-		return <BsFillArrowRightSquareFill style={styles.button} />;
+		return <GrChapterNext style={styles.button} />;
 	},
 	step: () => {
-		return <BsFillArrowDownRightCircleFill style={styles.button} />;
+		return <RxTrackNext style={styles.button} />;
 	},
 	stop: () => {
 		return <BsStopCircle style={styles.button} />;
 	},
 	reset: () => {
-		return <BiReset style={styles.button} />;
+		return <GrPowerReset style={styles.button} />;
 	},
 };
 
 export default function DebuggerButton(props) {
 	const { getIcon, tooltip, onClick } = props;
 
-	const [isTooltipVisible, setTooltipVisible] = useState(false);
-
+	const [isHovered, setHovered] = useState(false);
 	return (
-		<div
-			style={styles.button}
-			onMouseEnter={() => setTooltipVisible(true)}
-			onMouseLeave={() => setTooltipVisible(false)}
-			onClick={onClick}
-		>
-			{getIcon()}
-			{isTooltipVisible && (
-				<div
-					style={
-						isTooltipVisible ? styles.tooltipVisible : styles.tooltipHidden
-					}
-				>
-					{tooltip}
-				</div>
-			)}
-		</div>
+		<>
+			<div
+				style={
+					isHovered ? { ...styles.button, ...styles.hovered } : styles.button
+				}
+				onMouseEnter={() => setHovered(true)}
+				onMouseLeave={() => setHovered(false)}
+				onClick={onClick}
+			>
+				{getIcon()}
+			</div>
+			{isHovered && <div style={styles.tooltip}>{tooltip}</div>}
+		</>
 	);
 }
